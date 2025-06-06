@@ -38,7 +38,7 @@ const LoginPage = () => {
 
   return (
     <div className="login-page">
-      <h2>Welcome to the Quiz App</h2>
+      <h2>Welcome to the QuizMania</h2>
       <p>Sign in to start playing!</p>
       {error && <p className="error">{error}</p>}
       <div className="login-buttons">
