@@ -14,7 +14,7 @@ const HOST = `0.0.0.0`;
 app.use(
   cors({
     origin: [
-      "https://final-project-quiz-mania.vercel.app",
+      "https://quiz-mania-8h7a.vercel.app",
       /* "http://localhost:5173", */
     ],
 
@@ -50,7 +50,7 @@ const io = require("socket.io")(server, {
   cors: {
     origin: [
       /* "http://localhost:5173", */
-      "https://final-project-quiz-mania.vercel.app",
+      "https://quiz-mania-8h7a.vercel.app",
     ],
 
     methods: ["GET", "POST"],

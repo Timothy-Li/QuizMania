@@ -2,7 +2,7 @@
 
 A multiplayer web based quiz website where you can compete on your own or with your friends by answering questions and scoring points.
 
-**Live Demo:** [Quizmania](https://final-project-quiz-mania.vercel.app/)
+**Live Demo:** [Quizmania](https://quiz-mania-8h7a.vercel.app)
 
 [Presentation](https://www.canva.com/design/DAGg8ePcqfM/COb8yGx-KY-7cO6LUPVLTw/view?utm_content=DAGg8ePcqfM&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1f01586af9)
 
@@ -37,11 +37,11 @@ With single-player and multiplayer modes, users can either challenge themselves 
 
 ## Tech Stack
 
- **Frontend:** React, TypeScript 
+**Frontend:** React, TypeScript
 
- **Backend:** Node.js, Express, Socket.io
+**Backend:** Node.js, Express, Socket.io
 
-**Authentication:** Supabase OAuth 
+**Authentication:** Supabase OAuth
 
 **Testing:** Vite / Jest
 
@@ -76,7 +76,6 @@ npm run dev
 
 ```
 
-
 ---
 
 ## Features
@@ -95,12 +94,9 @@ Over the course of the week, we solidified core technical skills such as working
 
 As a team, we faced challenges with CSS styling, navigating WebSockets, and implementing authentication with Supabase. Another significant hurdle was merge conflicts, which slowed down our workflow. Moving forward, we would ensure regular git pull updates to minimise conflicts and take extra care with file naming conventions to improve collaboration.
 
-
-
 ---
 
 ## Future Improvements
-
 
 💡 AI-powered quiz generation – Enable users to provide context to OpenAI alongside API responses to create custom quizzes.
 💡 Expanded test coverage – Improve unit testing for the backend, focusing on API integration and simulating WebSocket behaviour.
@@ -110,16 +106,13 @@ As a team, we faced challenges with CSS styling, navigating WebSockets, and impl
 
 ## 👥 Contributors
 
-| Name | Role | GitHub |
-| --- | --- | --- |
-| Ashton Bailey| Front End | [Menice4](https://github.com/menice4)  |
-| Carmen | Testing | [CarmenZak](https://github.com/CarmenZak?tab=repositories) |
-| Jacob Smith| Front End | [SmithyJ98](https://github.com/SmithyJ98) |
-| Jermaine | Security | [Jackafella1](https://github.com/Jackafella1) |
-| Sergio | Backend & Web Sockets | [skudz96](https://github.com/skudz96) |
-| Tim Li| DevOps | [Timothy-Li](https://github.com/Timothy-Li) |
+| Name          | Role                  | GitHub                                                     |
+| ------------- | --------------------- | ---------------------------------------------------------- |
+| Ashton Bailey | Front End             | [Menice4](https://github.com/menice4)                      |
+| Carmen        | Testing               | [CarmenZak](https://github.com/CarmenZak?tab=repositories) |
+| Jacob Smith   | Front End             | [SmithyJ98](https://github.com/SmithyJ98)                  |
+| Jermaine      | Security              | [Jackafella1](https://github.com/Jackafella1)              |
+| Sergio        | Backend & Web Sockets | [skudz96](https://github.com/skudz96)                      |
+| Tim Li        | DevOps                | [Timothy-Li](https://github.com/Timothy-Li)                |
 
 ---
-
-
-
