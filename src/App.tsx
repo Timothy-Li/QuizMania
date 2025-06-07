@@ -5,7 +5,7 @@ import EndPage from "./Pages/EndPage/EndPage";
 import HomePage from "./Pages/HomePage/HomePage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import QuizPageMulti from "./Pages/QuizPageMulti/QuizPageMulti";
-import { Analytics } from "@vercel/analytics/next";
+
 import { AuthContext } from "./Context/AuthContext";
 import { useContext } from "react";
 
@@ -20,7 +20,6 @@ function App() {
 
   return (
     <Routes>
-      <Analytics />
       <Route path="/" element={<LoginPage />} />
       <Route
         path="/home"
