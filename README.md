@@ -45,7 +45,7 @@ With single-player and multiplayer modes, users can either challenge themselves 
 
 **Testing:** Vite / Jest
 
-**Deployment:** Render
+**Deployment:** Front-end: Vercel; Back-end: Render
 
 ---
 
