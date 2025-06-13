@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 import {
   createContext,
   useState,
@@ -7,50 +6,55 @@ import {
   ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabaseClient"; // Import Supabase client
-import { Session, AuthChangeEvent } from "@supabase/supabase-js"; // Import Supabase types
+import { supabase } from "../lib/supabaseClient";
+import { Session, AuthChangeEvent } from "@supabase/supabase-js";
+
+export interface GuestUser {
+  id: string;
+  name: string;
+  isGuest: true;
+}
 
 interface AuthContextType {
   session: Session | null;
+  guestUser: GuestUser | null;
   googleSignIn: () => Promise<{ error?: string }>;
-  githubSignIn: () => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
+  setGuestUser: (guestUser: GuestUser | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
+  const [guestUser, setGuestUser] = useState<GuestUser | null>(null);
   const navigate = useNavigate();
 
-  // Listen for auth state changes (e.g., after login)
   useEffect(() => {
-    // Set initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
-    // Listen for auth state changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, session: Session | null) => {
         setSession(session);
         if (event === "SIGNED_IN") {
-          navigate("/home"); // Redirect to /home after login
+          setGuestUser(null); // clear guest on sign-in
+          navigate("/home");
         } else if (event === "SIGNED_OUT") {
-          navigate("/"); // Redirect to login page after sign-out
+          setGuestUser(null);
+          navigate("/");
         }
       }
     );
 
-    // Cleanup` subscription on unmount
     return () => {
       subscription.unsubscribe();
     };
   }, [navigate]);
 
-  // Google Sign-In
   const googleSignIn = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -58,24 +62,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: error?.message };
   };
 
-  // GitHub Sign-In
-  const githubSignIn = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "github",
-    });
-    return { error: error?.message };
-  };
-
-  // Sign-Out
   const signOut = async () => {
     await supabase.auth.signOut();
     setSession(null);
+    setGuestUser(null);
     navigate("/");
   };
 
   return (
     <AuthContext.Provider
-      value={{ session, googleSignIn, githubSignIn, signOut }}
+      value={{
+        session,
+        guestUser,
+        googleSignIn,
+        signOut,
+        setGuestUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
