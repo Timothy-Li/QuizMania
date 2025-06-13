@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import { Session, AuthChangeEvent } from "@supabase/supabase-js";
 
-interface GuestUser {
+export interface GuestUser {
   id: string;
   name: string;
   isGuest: true;

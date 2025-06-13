@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../Context/AuthContext";
+import { AuthContext, GuestUser } from "../../Context/AuthContext";
 import "./LoginPage.css";
 
 const LoginPage = () => {
@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   // guest login handler
   const handleGuestLogin = () => {
-    const guestUser = {
+    const guestUser: GuestUser = {
       id: "guest_" + Math.random().toString(36).substring(2, 9),
       name: "Guest" + Math.floor(Math.random() * 10000),
       isGuest: true,
