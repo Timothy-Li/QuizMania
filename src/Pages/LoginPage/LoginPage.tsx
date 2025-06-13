@@ -1,18 +1,19 @@
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import "./LoginPage.css";
 
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
   const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingGithub, setLoadingGithub] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!authContext) {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { googleSignIn, githubSignIn } = authContext;
+  const { googleSignIn, setGuestUser } = authContext;
 
   const handleGoogleSignIn = async () => {
     setLoadingGoogle(true);
@@ -25,15 +26,15 @@ const LoginPage = () => {
     }
   };
 
-  const handleGithubSignIn = async () => {
-    setLoadingGithub(true);
-    setError(null);
-    const { error } = await githubSignIn();
-    setLoadingGithub(false);
-    if (error) {
-      setError("GitHub login failed. Please try again.");
-      console.error(error);
-    }
+  // guest login handler
+  const handleGuestLogin = () => {
+    const guestUser = {
+      id: "guest_" + Math.random().toString(36).substring(2, 9),
+      name: "Guest" + Math.floor(Math.random() * 10000),
+      isGuest: true,
+    };
+    setGuestUser(guestUser);
+    navigate("/home");
   };
 
   return (
@@ -44,19 +45,20 @@ const LoginPage = () => {
       <div className="login-buttons">
         <button
           onClick={handleGoogleSignIn}
-          disabled={loadingGoogle || loadingGithub}
+          disabled={loadingGoogle}
           className="google-btn"
           aria-label="Sign in with Google"
         >
           {loadingGoogle ? "Logging in..." : "Sign in with Google"}
         </button>
         <button
-          onClick={handleGithubSignIn}
-          disabled={loadingGoogle || loadingGithub}
-          className="github-btn"
-          aria-label="Sign in with GitHub"
+          onClick={handleGuestLogin}
+          disabled={loadingGoogle}
+          className="guest-btn"
+          aria-label="Continue as Guest"
+          style={{ marginTop: "1rem" }}
         >
-          {loadingGithub ? "Logging in..." : "Sign in with GitHub"}
+          Continue as Guest
         </button>
       </div>
     </div>
