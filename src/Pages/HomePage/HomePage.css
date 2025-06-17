@@ -85,7 +85,6 @@ body {
   margin-bottom: 2.5rem;
   color: #333;
   text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
-  animation: bounce 2s ease infinite;
 }
 
 @keyframes bounce {
