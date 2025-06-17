@@ -49,7 +49,7 @@ function EndPage() {
     if (savedScores) {
       try {
         const parsedScores = JSON.parse(savedScores);
-        console.log("Loaded final scores from localStorage:", parsedScores);
+
         setFinalScores(parsedScores);
         if (parsedScores.length > 0) {
           setWinner(parsedScores[0]);
@@ -65,7 +65,6 @@ function EndPage() {
     if (socket) {
       // Listen for scoreboard updates to determine the winner
       const handleScoreboardUpdate = (scoreboard: Player[]) => {
-        console.log("Received scoreboard update:", scoreboard);
         if (scoreboard && scoreboard.length > 0) {
           // Save the final scores
           setFinalScores(scoreboard);

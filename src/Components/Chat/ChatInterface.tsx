@@ -3,12 +3,6 @@ import React, { useState, useEffect } from "react";
 import { useSocket } from "../../Context/SocketContext";
 import "./chat.css";
 
-// Create a socket connection NO LONGER NEEDED, DONE IN CONTEXT
-/* const socket = io("http://localhost:5000"); 
-socket.on("connect", () => {
-  console.log("Connected to server with id: ", socket.id);
-}); */
-
 export default function Chat() {
   // Get the socket connection from the context
   const socket = useSocket();
@@ -23,7 +17,6 @@ export default function Chat() {
     if (!socket) return;
 
     socket.on("receive-message", (msg: string) => {
-      console.log("Received message: ", msg);
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
 

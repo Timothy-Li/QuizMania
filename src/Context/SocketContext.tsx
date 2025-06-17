@@ -16,15 +16,16 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   // create state variable to store the WebSocket connection
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  // when component mounts, it creates a new websocket connection to backend (CHANGE THIS FOR DEPLOYED BACKEND)
-  // stores socket instance in state
   useEffect(() => {
-    const newSocket = io("https://quiz-mania-backend.onrender.com");
+    const backendUrl =
+      import.meta.env.MODE === "production"
+        ? "https://quiz-mania-backend.onrender.com"
+        : "http://localhost:5002";
+
+    const newSocket = io(backendUrl);
 
     setSocket(newSocket);
 
-    // Close websocket connection when component unmounts to prevent memory leaks
-    // empty dependency array
     return () => {
       newSocket.close();
     };

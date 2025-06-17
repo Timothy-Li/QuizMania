@@ -13,10 +13,7 @@ const HOST = `0.0.0.0`;
 
 app.use(
   cors({
-    origin: [
-      "https://quiz-mania-8h7a.vercel.app",
-      /* "http://localhost:5173", */
-    ],
+    origin: ["https://quiz-mania-8h7a.vercel.app", "http://localhost:5173"],
 
     methods: ["GET", "POST"],
     credentials: true,
@@ -48,10 +45,7 @@ const userScores = {};
 const server = require("http").createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: [
-      /* "http://localhost:5173", */
-      "https://quiz-mania-8h7a.vercel.app",
-    ],
+    origin: ["http://localhost:5173", "https://quiz-mania-8h7a.vercel.app"],
 
     methods: ["GET", "POST"],
     credentials: true,
@@ -60,8 +54,6 @@ const io = require("socket.io")(server, {
 
 // Socket.io connection, runs every time a client connects to our server, giving a socket instance for each one
 io.on("connection", (socket) => {
-  console.log("New client connected:", socket.id);
-
   // Add a new user to the users object when connected
   users[socket.id] = { id: socket.id, name: "", score: 0 };
 
@@ -70,7 +62,6 @@ io.on("connection", (socket) => {
 
   // Listen for a message from the client
   socket.on("message", (data) => {
-    console.log("Message received on server:", data);
     // Send the message to all clients
     socket.broadcast.emit("receive-message", data);
   });
@@ -87,7 +78,6 @@ io.on("connection", (socket) => {
   // Makes a request to the API for questions
   // Sends the questions to all clients
   socket.on("start-game", async () => {
-    console.log("Start game event received");
     try {
       const response = await fetch(
         "https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=multiple"
@@ -102,16 +92,12 @@ io.on("connection", (socket) => {
         ]),
       }));
 
-      // Log number of questions
-      console.log("Number of Questions:", questions.length);
-
       // send notification to navigate to quiz page
       io.emit("navigate-to-quiz");
 
       // send questions data in a separate event
       setTimeout(() => {
         io.emit("quiz-questions", questions);
-        console.log("emitted quiz-questions event");
       }, 500); // small delay to ensure navigation happens first
     } catch (error) {
       console.error("Error fetching quiz data:", error);
@@ -140,14 +126,11 @@ io.on("connection", (socket) => {
 
   // Listen for requests for final scores
   socket.on("request-final-scores", () => {
-    console.log("Final scores requested by:", socket.id);
     broadcastScoreboard();
   });
 
   // handler for resetting scores
   socket.on("reset-scores", () => {
-    console.log("resetting scores for all users");
-
     // reset all user scores to 0
     Object.keys(users).forEach((userId) => {
       if (users[userId]) {
@@ -177,9 +160,6 @@ io.on("connection", (socket) => {
       user.rank = index + 1;
     });
 
-    // debugging
-    console.log("Broadcasting scoreboard:", scoreboard);
-
     // finally broadcast scoreboard to all clients
     io.emit("scoreboard-update", scoreboard);
   }
@@ -191,7 +171,6 @@ io.on("connection", (socket) => {
 
   // HANDLE USERS DISCONNECTING
   socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
     // remove the user
     delete users[socket.id];
     // also remove user scores

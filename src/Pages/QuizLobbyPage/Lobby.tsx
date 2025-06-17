@@ -26,8 +26,6 @@ export default function Lobby() {
   useEffect(() => {
     if (!socket) return;
 
-    console.log("Lobby: Setting up navigate-to-quiz listener");
-
     // Listen for updates to the user list
     socket.on("update-users", (users: User[]) => {
       setUsers(users);
@@ -40,7 +38,6 @@ export default function Lobby() {
 
     // Listen only for navigation instruction
     socket.on("navigate-to-quiz", () => {
-      console.log("Lobby: navigate-to-quiz event received");
       navigate("/quiz-multi");
     });
 

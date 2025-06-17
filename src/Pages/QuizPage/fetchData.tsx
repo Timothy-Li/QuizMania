@@ -71,13 +71,6 @@ export default async function fetchData(): Promise<Question[]> {
 
     const text = await response.text();
 
-    // Debug the response
-    console.log("API Response text length:", text.length);
-    console.log(
-      "API Response sample:",
-      text.substring(0, 100) + (text.length > 100 ? "..." : "")
-    );
-
     if (!text || text.trim() === "") {
       console.warn("Empty response from API");
       return fallbackQuestions;

@@ -47,15 +47,7 @@ export default function QuizPageMulti() {
 
     if (!socket) return;
 
-    console.log("QuizPageMulti: Setting up quiz-questions listener");
-
     const handleQuestions = (questionData: Question[]) => {
-      console.log("QuizPageMulti: Received quiz-questions event");
-      console.log(
-        "QuizPageMulti: Number of questions received:",
-        questionData.length
-      );
-
       // Store in ref
       questionsRef.current = questionData;
 
@@ -63,7 +55,6 @@ export default function QuizPageMulti() {
       if (isMounted.current) {
         setQuestions([...questionData]);
         setLoading(false);
-        console.log("State updated with questions");
       }
     };
 
@@ -76,7 +67,6 @@ export default function QuizPageMulti() {
     const handleScoreboardUpdate = (scoreboard: ScoreboardEntry[]) => {
       if (isMounted.current) {
         setFinalScores(scoreboard);
-        console.log("Updated final scores:", scoreboard);
       }
     };
 
@@ -92,7 +82,6 @@ export default function QuizPageMulti() {
     // Check if we already have questions (in case event fired before listener setup)
     const checkQuestions = setTimeout(() => {
       if (loading && questionsRef.current.length > 0 && isMounted.current) {
-        console.log("Using cached questions from ref");
         setQuestions([...questionsRef.current]);
         setLoading(false);
       }
@@ -103,7 +92,6 @@ export default function QuizPageMulti() {
       clearTimeout(checkQuestions);
       socket.off("quiz-questions", handleQuestions);
       socket.off("scoreboard-update", handleScoreboardUpdate);
-      console.log("QuizPageMulti: Cleaned up listeners");
     };
   }, [socket, loading]);
 
@@ -139,16 +127,11 @@ export default function QuizPageMulti() {
   const handleTimerComplete = () => {
     // If we're already processing a question transition, don't trigger another one
     if (processingNextQuestion) {
-      console.log(
-        "Already processing next question, ignoring timer completion"
-      );
       return;
     }
 
     setProcessingNextQuestion(true); // Set lock to prevent multiple transitions
     setIsBufferTime(true); // Set buffer time to true
-
-    console.log(`Timer completed for question ${currentQuestionIndex + 1}`);
 
     setTimeout(() => {
       if (!isMounted.current) return; // Safety check
@@ -156,26 +139,14 @@ export default function QuizPageMulti() {
       setIsBufferTime(false); // Reset buffer time after 5 seconds
 
       // Log the current question index before making decisions
-      console.log(
-        `Processing next step. Current question index: ${currentQuestionIndex}, Total questions: ${questions.length}`
-      );
 
       if (currentQuestionIndex < questions.length - 1) {
-        console.log(
-          `Moving to next question: ${currentQuestionIndex + 1} -> ${
-            currentQuestionIndex + 2
-          }`
-        );
         setCurrentQuestionIndex((prevIndex) => {
-          console.log(
-            `Setting question index from ${prevIndex} to ${prevIndex + 1}`
-          );
           return prevIndex + 1;
         });
         // Release the lock after updating the question index
         setTimeout(() => setProcessingNextQuestion(false), 100);
       } else {
-        console.log("Quiz complete, preparing for end screen");
         // Game is ending - store final scores in localStorage before navigating
         localStorage.setItem("finalScoreboard", JSON.stringify(finalScores));
 
@@ -185,7 +156,6 @@ export default function QuizPageMulti() {
         // Allow a small delay for the final scores to be received
         setTimeout(() => {
           if (isMounted.current) {
-            console.log("Navigating to end screen");
             navigate("/end");
           }
         }, 1000);
@@ -195,8 +165,6 @@ export default function QuizPageMulti() {
 
   // Extra debugging information
   if (loading) {
-    console.log("Still in loading state, questions length:", questions.length);
-    console.log("Questions in ref:", questionsRef.current.length);
     return <div>Loading quiz questions...</div>;
   }
 
@@ -205,9 +173,6 @@ export default function QuizPageMulti() {
   }
 
   const currentQuestion = questions[currentQuestionIndex];
-
-  console.log("Rendering quiz. Current question index:", currentQuestionIndex);
-  console.log("Current question:", currentQuestion);
 
   if (!currentQuestion) {
     return <div>Question data is invalid. Please restart the quiz.</div>;
