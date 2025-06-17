@@ -16,7 +16,11 @@ function App() {
     throw new Error("AuthContext must be used within an AuthProvider");
   }
 
-  const { session } = authContext;
+  // Get both session and guestUser from your AuthContext
+  const { session, guestUser } = authContext;
+
+  // Consider authenticated if session OR guestUser exists
+  const isAuthenticated = !!session || !!guestUser;
 
   return (
     <>
@@ -25,24 +29,23 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route
           path="/home"
-          element={session ? <HomePage /> : <Navigate to="/" />}
+          element={isAuthenticated ? <HomePage /> : <Navigate to="/" />}
         />
         <Route
           path="/quiz-lobby"
-          element={session ? <Lobby /> : <Navigate to="/" />}
+          element={isAuthenticated ? <Lobby /> : <Navigate to="/" />}
         />
         <Route
           path="/quiz"
-          element={session ? <QuizPage /> : <Navigate to="/" />}
+          element={isAuthenticated ? <QuizPage /> : <Navigate to="/" />}
         />
-
         <Route
           path="/quiz-multi"
-          element={session ? <QuizPageMulti /> : <Navigate to="/" />}
+          element={isAuthenticated ? <QuizPageMulti /> : <Navigate to="/" />}
         />
         <Route
           path="/end"
-          element={session ? <EndPage /> : <Navigate to="/" />}
+          element={isAuthenticated ? <EndPage /> : <Navigate to="/" />}
         />
       </Routes>
     </>
